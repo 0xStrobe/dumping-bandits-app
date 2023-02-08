@@ -21,3 +21,113 @@
   font-style: normal;
   font-display: swap;
 }
+
+* {
+  font-family: "MS Sans Serif", sans-serif;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+body {
+  background: black;
+}
+
+.app-gradient {
+  background: linear-gradient(180deg, #062e1e 0%, #02130d 100%);
+}
+
+#sign-neon-line {
+  animation: flickerStroke 2.5s linear infinite;
+}
+
+#neon-line-glow {
+  animation: flickerStroke 2.5s linear infinite;
+}
+
+@keyframes flickerStroke {
+  0% {
+    stroke: #0df99b;
+  }
+  20% {
+    stroke: #0df99b;
+  }
+  23% {
+    stroke: #199664;
+  }
+  26% {
+    stroke: #0df99b;
+  }
+  30% {
+    stroke: #093423;
+  }
+  50% {
+    stroke: #093423;
+  }
+  52% {
+    stroke: #0df99b;
+  }
+  93% {
+    stroke: #0df99b;
+  }
+  97% {
+    stroke: #199664;
+  }
+  100% {
+    stroke: #0df99b;
+  }
+}
+
+#canto-sign-logo {
+  animation: flickerBg 2.5s linear infinite;
+}
+
+@keyframes flickerBg {
+  0% {
+    fill: #0df99b;
+  }
+  20% {
+    fill: #0df99b;
+  }
+  23% {
+    fill: #0f573a;
+  }
+  26% {
+    fill: #0df99b;
+  }
+  93% {
+    fill: #0df99b;
+  }
+  97% {
+    fill: black;
+  }
+  100% {
+    fill: #0df99b;
+  }
+}
+
+.animation-insert-coin {
+  animation: insert-coin 2s ease-in-out;
+}
+
+@keyframes insert-coin {
+  0% {
+    transform: translateX(-200px);
+  }
+  100% {
+    transform: translateX(50px);
+  }
+}
