@@ -18,7 +18,7 @@ function CantoPlay({ className }) {
       <path
         d="M0 15C0 6.716 6.716 0 15 0h203c8.284 0 15 6.716 15 15v318c0 8.284-6.716 15-15 15H15c-8.284 0-15-6.716-15-15V15z"
         fill="#06FC99"
-        fillOpacity={0.6}
+        fillOpacity={100}
         style={{
           mixBlendMode: "multiply",
         }}

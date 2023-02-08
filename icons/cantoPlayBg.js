@@ -31,7 +31,7 @@ function CantoPlayBg({ className }) {
         clipRule="evenodd"
         d="M15 0C6.716 0 0 6.716 0 15v318c0 8.284 6.716 15 15 15h246c8.284 0 15-6.716 15-15V15c0-8.284-6.716-15-15-15H15zm27 31.5a7.5 7.5 0 00-15 0v285a7.5 7.5 0 0015 0v-285z"
         fill="#06FC99"
-        fillOpacity={0.6}
+        fillOpacity={1}
         style={{
           mixBlendMode: "multiply",
         }}
