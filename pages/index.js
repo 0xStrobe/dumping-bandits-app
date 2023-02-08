@@ -12,6 +12,7 @@ import WelcomeSign from "../icons/welcomeSign";
 import Mountain from "../icons/mountain";
 import PalmRight from "../icons/palmRight";
 import PalmLeft from "../icons/palmLeft";
+import Cloud from "../icons/cloud";
 
 export default function Home() {
   return (
@@ -33,6 +34,18 @@ export default function Home() {
           </Link>
         </div>
         <div className="flex justify-center h-full">
+          <div className="absolute max-w-[270px] w-full left-20 bottom-[625px] opacity-75">
+            <Cloud />
+          </div>
+          <div className="absolute max-w-[230px] w-full left-[520px] bottom-[670px] opacity-70">
+            <Cloud />
+          </div>
+          <div className="absolute max-w-[270px] w-full right-20 bottom-[625px] opacity-75">
+            <Cloud />
+          </div>
+          <div className="absolute max-w-[180px] w-full right-[420px] bottom-[620px] opacity-70">
+            <Cloud />
+          </div>
           <div className="absolute max-w-[800px] w-full left-12 bottom-0">
             <PalmLeft />
           </div>
@@ -46,6 +59,12 @@ export default function Home() {
             <div className="w-[111px] h-[140px] absolute bottom-[532px] z-50 right-16">
               <Image src="/images/brentdog.png" fill />
             </div>
+            <Link
+              href="/game"
+              className="w-[220px] h-[80px] absolute bottom-[220px] z-50 left-12
+              transition-opacity opacity-0 hover:opacity-70 duration-500
+                bg-brand-green blur-3xl
+              "></Link>
             <WelcomeSign className="" />
           </div>
         </div>
