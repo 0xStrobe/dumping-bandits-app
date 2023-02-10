@@ -8,35 +8,7 @@ A few design principles:
 - Winners are deterministically generated from a single random number
 - We store past games on the contract, to avoid reliance on off-chain event indexing for historical lookups
 
-**methods for accessing round info:**
-
-```
-  // gas on canto issa beri cheapo so we can jussa store all ze past rounds fora ez luke up
-  mapping(uint256 => Round) public rounds;
-
-  // participant id issa 1-indexed
-  mapping(uint256 => mapping(address => uint256)) public participantIds; // roundId => participant => participantId
-  mapping(uint256 => mapping(uint256 => address)) public idParticipants; // roundId => participantId => participant
-
-```
-
-## Solidity Data Types
-
-```
-  struct Round {
-    uint256 id;
-    uint256 randomness;
-    uint256 price;
-    uint256 minDuration;
-    uint256 totalWinners;
-    uint256 noWinnerProbability;
-    // ze following issa only updated wen ze round issa finalized
-    uint256 roundStartedAt;
-    uint256 totalParticipants;
-  }
-```
-
-### Typescript Types
+## Frontend
 
 ```
 User {
