@@ -1,3 +1,13 @@
+# Game and API design
+
+## Contracts
+
+A few design principles:
+
+- We manage minimum state variables as possible, to preserve single source of truth
+- Winners are deterministically generated from a single random number
+- We store past games on the contract, to avoid reliance on off-chain event indexing for historical lookups
+
 **methods for accessing round info:**
 
 ```
