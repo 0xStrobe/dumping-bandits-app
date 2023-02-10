@@ -41,20 +41,20 @@ A few design principles:
 ```
 User {
   IsParticipating: boolean;
-  participantId: uint;
+  participantId: BigInt;
   address: string;
 }
 
 Round {
-    id: uint;
-    randomness: uint;
-    price: uint;
-    minDuration: uint;
-    totalWinners: uint;
-    noWinnerProbability: uint;
+    id: BigInt;
+    randomness: BigInt;
+    price: BigInt;
+    minDuration: BigInt;
+    totalWinners: BigInt;
+    noWinnerProbability: BigInt;
     totalPot: uint // totalParticipants * price
-    totalParticipants: uint;
-    roundStartedAt: uint;
+    totalParticipants: BigInt;
+    roundStartedAt: BigInt;
 }
 
 ```
@@ -65,7 +65,7 @@ get winners of a given round
 
 ```
   Winner {
-    amount: uint;
+    amount: BigInt;
     address: string;
   }
 
@@ -76,9 +76,9 @@ get history of all rounds:
 
 ```
   HistoricalRound {
-    id: uint;
-    price: uint;
-    totalParticipants: uint;
+    id: BigInt;
+    price: BigInt;
+    totalParticipants: BigInt;
     winners: Winners[];
   }
 
