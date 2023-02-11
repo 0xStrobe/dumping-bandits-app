@@ -1,11 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Lore from "../components/lore";
-import Play from "../components/play";
-import Landing from "../components/landing";
-import MyBandits from "../components/myBandits";
-import Rules from "../components/rules";
 import React, { useState } from "react";
 import Link from "next/link";
 import WelcomeSign from "../icons/welcomeSign";
@@ -57,7 +51,11 @@ export default function Home() {
           </div>
           <div className="absolute w-full h-full max-w-[550px] flex items-end">
             <div className="w-[111px] h-[140px] absolute bottom-[532px] z-50 right-16">
-              <Image src="/images/brentdog.png" fill />
+              <Image
+                src="/images/brentdog.png"
+                fill
+                alt="brent the dumping doggo"
+              />
             </div>
             <Link
               href="/game"

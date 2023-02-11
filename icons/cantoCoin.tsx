@@ -1,4 +1,6 @@
-function CantoCoin({ className }) {
+import { Icon } from "./types";
+
+function CantoCoin({ className }: Icon) {
   return (
     <svg
       width={200}

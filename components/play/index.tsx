@@ -4,7 +4,7 @@ import CantoPlayBg from "../../icons/cantoPlayBg";
 import CantoCoin from "../../icons/cantoCoin";
 
 const Play = () => {
-  const [insertCoin, setInsertCoin] = useState(false);
+  const [insertCoin, setInsertCoin] = useState<boolean>(false);
 
   const toggleCoin = () => {
     setInsertCoin(true);

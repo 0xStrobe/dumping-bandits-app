@@ -1,4 +1,5 @@
-function CantoPlayBg({ className }) {
+import { Icon } from "./types";
+function CantoPlayBg({ className }: Icon) {
   return (
     <svg
       width={276}

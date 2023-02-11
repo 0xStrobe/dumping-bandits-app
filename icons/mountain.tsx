@@ -1,12 +1,12 @@
-import * as React from "react";
+import { Icon } from "./types";
 
-function Mountain(props) {
+function Mountain({ className }: Icon) {
   return (
     <svg
       viewBox="0 0 690 648"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}>
+      className={className}>
       <path
         d="M99.66 246.394L-16.138.825-50.984 647.96h740.451L452.885 494.344l-96.264-22.842-93.432-85.688-78.679-94.499-84.85-44.921z"
         fill="#03140E"

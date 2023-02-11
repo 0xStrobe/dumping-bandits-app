@@ -1,4 +1,6 @@
-function CantoPlay({ className }) {
+import { Icon } from "./types";
+
+function CantoPlay({ className }: Icon) {
   return (
     <svg
       width={233}

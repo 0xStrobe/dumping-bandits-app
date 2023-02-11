@@ -8,11 +8,17 @@ import MyBandits from "../components/myBandits";
 import Rules from "../components/rules";
 import React, { useState } from "react";
 import Link from "next/link";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+interface Page {
+  name: string;
+  component: React.ReactNode;
+}
 
 export default function Home() {
-  const [roundNumber, setRoundNumber] = useState(1);
-  const [activePage, setActivePage] = useState("Play");
-  const [pages, setPages] = useState([
+  const [roundNumber, setRoundNumber] = useState<number>(1);
+  const [activePage, setActivePage] = useState<string>("Play");
+  const [pages, setPages] = useState<Page[]>([
     {
       name: "Play",
       component: <Play />,
@@ -39,13 +45,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-full px-20 pt-8 pb-8">
-        <Link href="/">
-          <div className="relative mt-2 text-lg text-brand-green">
-            DUMPING BANDITS
-          </div>
-        </Link>
+        <div className="flex items-center justify-between w-full">
+          <Link href="/">
+            <div className="relative mt-2 text-lg text-brand-green">
+              DUMPING BANDITS
+            </div>
+          </Link>
+          <ConnectButton />
+        </div>
         <div className="pl-5">
-          {pages.map((page) => {
+          {pages.map((page: Page) => {
             return (
               <div>
                 <div className="relative mt-2 text-lg text-brand-green">

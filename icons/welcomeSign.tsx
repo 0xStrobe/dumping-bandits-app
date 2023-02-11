@@ -1,10 +1,12 @@
-function WelcomeSign(props) {
+import { Icon } from "./types";
+
+function WelcomeSign({ className }: Icon) {
   return (
     <svg
       viewBox="0 0 748 771"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}>
+      className={className}>
       <path
         fill="#020F0A"
         d="M207.5 304.233h40V771h-40zM477.5 304.233h40V771h-40z"
