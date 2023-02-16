@@ -9,7 +9,13 @@ import Rules from "../components/rules";
 import React, { useState } from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useBanditTreasury, useDumpingBanditsName } from "../hooks/useDumpingBandits";
+import {
+  useBanditTreasury,
+  useDumpingBanditsName,
+  useDumpingBanditsTokenUri,
+  useDumpingBanditsParticipate,
+} from "../hooks/useDumpingBandits";
+import { BigNumber } from "ethers";
 
 interface Page {
   name: string;
@@ -38,10 +44,16 @@ export default function Home() {
     },
   ]);
 
-  const { data, error } = useDumpingBanditsName({
+  const { data: contractName } = useDumpingBanditsName({
     address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
   });
-  console.log(data);
+  contractName && console.log(contractName);
+
+  const { data: nftUri } = useDumpingBanditsTokenUri({
+    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    args: [BigNumber.from(1)],
+  });
+  nftUri && console.log(nftUri);
 
   return (
     <div className="w-full min-h-screen app-gradient">
