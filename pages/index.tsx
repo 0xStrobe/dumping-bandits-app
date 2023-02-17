@@ -23,7 +23,7 @@ export default function Home() {
               DUMPING BANDITS
             </div>
           </Link>
-          <Link href="/game">
+          <Link href="/round/1">
             <div className="relative mt-2 text-lg text-brand-green">PLAY</div>
           </Link>
         </div>
@@ -58,11 +58,12 @@ export default function Home() {
               />
             </div>
             <Link
-              href="/game"
+              href="/round/1"
               className="w-[220px] h-[80px] absolute bottom-[220px] z-50 left-12
               transition-opacity opacity-0 hover:opacity-70 duration-500
                 bg-brand-green blur-3xl
-              "></Link>
+              "
+            ></Link>
             <WelcomeSign className="" />
           </div>
         </div>

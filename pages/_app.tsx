@@ -10,6 +10,7 @@ import { avalancheFuji } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { GameProvider } from "../contexts/gameContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const { chains, provider } = configureChains(
   [avalancheFuji],
@@ -38,6 +39,7 @@ function MyApp({ Component, pageProps }) {
         theme={darkTheme({ ...darkTheme.accentColors.green })}
       >
         <GameProvider>{getLayout(<Component {...pageProps} />)}</GameProvider>
+        <ToastContainer />
       </RainbowKitProvider>
     </WagmiConfig>
   );

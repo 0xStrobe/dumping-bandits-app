@@ -6,48 +6,38 @@ import {
 } from "../../hooks/useDumpingBandits";
 
 const Countdown = () => {
-  const { roundEndsAt, roundStartedAt } = useContext(GameContext);
-  const [countdown, setCountdown] = useState("0");
+  const { roundEndsAt, roundStartedAt, roundId } = useContext(GameContext);
+  const [countdown, setCountdown] = useState("");
+
   const calcCountdown = () => {
-    if (roundEndsAt) {
-      if (roundEndsAt.toNumber() > Math.floor(Date.now() / 1000)) {
-        setCountdown("Round Over");
+    if (roundEndsAt.toNumber() !== 0) {
+      const now = Math.floor(Date.now() / 1000);
+      if (now > roundEndsAt.toNumber()) {
+        setCountdown("Over");
         return;
       }
-      const now = Math.floor(Date.now() / 1000);
       const diff = roundEndsAt.toNumber() - now;
       const minutes = Math.floor(diff / 60);
-      const seconds = diff % 60;
-      setCountdown(`${minutes}:${seconds}`);
+      let seconds = diff % 60;
+      let formattedSeconds = `0${seconds}`;
+      if (String(seconds).length === 1) {
+        formattedSeconds = `0${seconds}`;
+      } else {
+        formattedSeconds = String(seconds);
+      }
+      setCountdown(`${minutes}:${formattedSeconds}`);
     }
   };
 
-  const { config: finalizeConfig } = usePrepareDumpingBanditsFinalizeRound({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
-  });
-
+  // Third Attempts
   useEffect(() => {
-    calcCountdown();
+    setInterval(() => calcCountdown(), 1000);
   }, []);
 
-  const { write: executeFinalizeRound } =
-    useDumpingBanditsFinalizeRound(finalizeConfig);
-
-  return (
-    <div>
-      {roundEndsAt && roundEndsAt.toNumber() > Math.floor(Date.now() / 1000) ? (
-        <button
-          onClick={() => {
-            executeFinalizeRound?.();
-          }}
-          className="border-brand-green text-brand-green p-4 border"
-        >
-          Finalize the round
-        </button>
-      ) : (
-        countdown
-      )}
-    </div>
+  return roundStartedAt.toNumber() === 0 ? (
+    <div>Round {roundId.toNumber() + 1} is ready to start</div>
+  ) : (
+    <div>{countdown}</div>
   );
 };
 

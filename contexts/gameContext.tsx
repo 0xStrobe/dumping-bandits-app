@@ -21,8 +21,11 @@ export const GameContext = createContext({
   roundId: BigNumber.from(1),
   currentTokenIds: [],
   currentOwnerTokens: [],
+  allOwnerTokens: [],
   roundParticipants: BigNumber.from(0),
   roundStartedAt: BigNumber.from(0),
+  roundStuck: false,
+  setRoundStuck: () => undefined,
   price: BigNumber.from(0),
   currentPot: "0",
   roundEndsAt: BigNumber.from(0),
@@ -35,32 +38,33 @@ export const GameProvider = ({ children }) => {
   const [currentOwnerTokens, setCurrentOwnerTokens] = useState<OwnerToken[]>(
     []
   );
+  const [allOwnerTokens, setAllOwnerTokens] = useState<OwnerToken[]>([]);
 
+  const [roundStuck, setRoundStuck] = useState<boolean>(false);
   const { address } = useAccount();
 
   const { data: roundId } = useDumpingBanditsRoundId({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
+    address: "0x2c146750FD8462492b6A8448Bbe80cBe0499a8b5",
+    watch: true,
   });
 
   const { data: roundParticipants } = useDumpingBanditsRoundParticipants({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
+    address: "0x2c146750FD8462492b6A8448Bbe80cBe0499a8b5",
+    watch: true,
   });
 
   const { data: roundStartedAt } = useDumpingBanditsRoundStartedAt({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
+    address: "0x2c146750FD8462492b6A8448Bbe80cBe0499a8b5",
+    watch: true,
   });
 
   const { data: price } = useDumpingBanditsPrice({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
-  });
-
-  const { data: ownerTokenIds } = useDumpingBanditsGetOwnerTokenIds({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
-    args: [address],
+    address: "0x2c146750FD8462492b6A8448Bbe80cBe0499a8b5",
   });
 
   const { data: ownerTokens } = useDumpingBanditsGetOwnerTokens({
-    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
+    address: "0x2c146750FD8462492b6A8448Bbe80cBe0499a8b5",
+    watch: true,
     args: [address],
   });
 
@@ -73,12 +77,40 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (roundStartedAt) {
       setRoundEndsAt(roundStartedAt.add(ethers.BigNumber.from(900)));
+    } else {
+      setRoundEndsAt(ethers.BigNumber.from(900));
     }
-  }, [roundStartedAt]);
+  }, [roundStartedAt, roundId]);
+
+  const [time, setTime] = useState(0);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTime((prevTime) => prevTime + 1); // <-- Change this line!
+    }, 1000);
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, []);
 
   useEffect(() => {
-    console.log("ownerTokens", ownerTokens);
+    const now = Math.floor(Date.now() / 1000);
+    if (now > roundEndsAt?.toNumber() && roundParticipants?.toNumber() >= 4) {
+      console.log("now > ends at");
+      setRoundStuck(true);
+    } else {
+      console.log("now < ends at");
+      setRoundStuck(false);
+    }
+  }, [time]);
+
+  useEffect(() => {
     if (ownerTokens) {
+      setAllOwnerTokens(
+        ownerTokens.map((token) => {
+          return token;
+        })
+      );
+
       let filtered = ownerTokens.filter((tokenId) => {
         const tokenRoundId = tokenId.roundId;
         if (tokenRoundId.eq(roundId)) {
@@ -87,7 +119,8 @@ export const GameProvider = ({ children }) => {
       });
       setCurrentOwnerTokens(filtered);
     }
-  }, [ownerTokens]);
+    console.log(roundId.toString());
+  }, [ownerTokens, roundId]);
 
   return (
     <GameContext.Provider
@@ -97,7 +130,10 @@ export const GameProvider = ({ children }) => {
         roundParticipants,
         roundStartedAt,
         price,
+        roundStuck,
+        setRoundStuck,
         currentPot,
+        allOwnerTokens,
         currentOwnerTokens,
         roundEndsAt,
       }}
