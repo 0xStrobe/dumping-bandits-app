@@ -1,64 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import CantoPlay from "../../icons/cantoPlay";
 import CantoPlayBg from "../../icons/cantoPlayBg";
 import CantoCoin from "../../icons/cantoCoin";
+import { GameContext } from "../../contexts/gameContext";
+import ArrowLeft from "../../icons/arrowLeft";
+import ArrowRight from "../../icons/arrowRight";
+import { ethers, BigNumber } from "ethers";
 import {
-  useBanditTreasury,
-  useDumpingBanditsName,
-  useDumpingBanditsTokenUri,
-  useDumpingBanditsLastRoundLastTokenId,
-  useDumpingBanditsRoundId,
-  useDumpingBanditsRoundStartedAt,
-  useDumpingBanditsRounds,
-  useDumpingBanditsRoundParticipants,
-  usePrepareDumpingBanditsParticipate,
-  useDumpingBanditsApprove,
   useDumpingBanditsParticipate,
+  usePrepareDumpingBanditsParticipate,
 } from "../../hooks/useDumpingBandits";
-import { BigNumber } from "ethers";
 
 const Play = () => {
   const [insertCoin, setInsertCoin] = useState<boolean>(false);
-
-  const toggleCoin = () => {
-    setInsertCoin(true);
-    setTimeout(() => {
-      setInsertCoin(false);
-    }, 2000);
-  };
-
   const [playing, setPlaying] = useState<boolean>(false);
   const [roundNumber, setRoundNumber] = useState<number>(1);
   const [roundPot, setRoundPot] = useState<string>("0");
   const [entries, setEntries] = useState<string[]>(["1", "2"]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    roundId,
+    roundParticipants,
+    roundStartedAt,
+    price,
+    currentPot,
+    roundEndsAt,
+  } = useContext(GameContext);
 
-  const { config, error } = usePrepareDumpingBanditsParticipate({
-    address: "0xecb504d39723b0be0e3a9aa33d646642d1051ee1",
+  const { config: participateConfig } = usePrepareDumpingBanditsParticipate({
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    overrides: {
+      value: ethers.utils.parseEther("0.01"),
+    },
   });
-  const { write: participate } = useDumpingBanditsParticipate({
-    ...config,
-  });
 
-  console.log(participate);
+  const { write: executeParticipate } =
+    useDumpingBanditsParticipate(participateConfig);
 
+  const handlePlay = () => {
+    if (!loading) {
+      setLoading(true);
+      setInsertCoin(true);
+      setTimeout(() => {
+        setInsertCoin(false);
+        setLoading(false);
+        executeParticipate?.();
+      }, 2000);
+    }
+  };
+
+  if (roundId && roundParticipants && price && currentPot && roundStartedAt) {
+    console.log("roundId", roundId.toString());
+    console.log("roundParticipants", roundParticipants.toString());
+    console.log("price", price.toString());
+    console.log("currentPot", currentPot.toString());
+    console.log("roundStartedAt", roundStartedAt.toString());
+    console.log("roundEndsAt", roundEndsAt.toString());
+  }
+
+  console.log(ethers.utils.parseEther(currentPot.toString()));
   return (
     <div className="w-full min-h-[546px] h-full">
-      <div className="flex items-start justify-center w-full h-full pt-10">
+      <div className="flex items-start justify-center w-full h-full">
         <div className="flex justify-between w-full h-full min-h-full py-12">
           <div className="w-1/2">
             <div className="flex items-center flex-start">
-              <button className="bg-brand-green p-1 mr-1">back</button>
-              <button className="bg-brand-green p-1 mr-1">forward</button>
-              <div className="text-brand-green text-xl">
-                Round {roundNumber}
-              </div>
-              <button className="text-brand-green py-4" onClick={participate}>
-                click me to write
+              <button className="bg-brand-green/0 p-1 mr-1">
+                <ArrowLeft className="w-6 h-6 text-brand-green" />
               </button>
+              <button className="bg-brand-green/0 p-1 mr-1">
+                <ArrowRight className="w-6 h-6 text-brand-green" />
+              </button>
+              <div className="text-brand-green text-xl">
+                Round {roundId && roundId.toString()}
+              </div>
             </div>
             <div className="mt-12">
               <div className="text-brand-green mb-4">Total Prize Pool:</div>
-              <h2 className="text-brand-green text-6xl">{roundPot} CANTO</h2>
+              <h2 className="text-brand-green text-6xl">
+                {currentPot && currentPot} CANTO
+              </h2>
             </div>
             <div className="mt-8">
               <div className="text-brand-green mb-4">Your Entries</div>
@@ -84,7 +105,7 @@ const Play = () => {
               )}
               <div
                 className="absolute w-[276px] cursor-pointer"
-                onClick={toggleCoin}
+                onClick={handlePlay}
               >
                 <CantoPlayBg className="absolute top-0 right-0 z-10" />
                 <CantoPlay className="absolute top-0 right-0 z-30" />

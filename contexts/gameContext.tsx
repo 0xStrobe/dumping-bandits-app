@@ -8,50 +8,60 @@ import {
   useDumpingBanditsRoundStartedAt,
   useDumpingBanditsRounds,
   useDumpingBanditsRoundParticipants,
+  useDumpingBanditsGetOwnerTokenIds,
   useDumpingBanditsPrice,
+  useDumpingBanditsTokenIdRound,
 } from "../hooks/useDumpingBandits";
 import { BigNumber, ethers } from "ethers";
 import { useAccount } from "wagmi";
 
 type GameContextType = {
   roundId: BigNumber;
+  currentTokenIds: BigNumber[];
   roundParticipants: BigNumber;
   roundStartedAt: BigNumber;
   price: BigNumber;
-  currentPot: BigNumber;
+  currentPot: string;
   roundEndsAt: BigNumber;
 };
 
 export const GameContext = createContext({
   roundId: BigNumber.from(1),
+  currentTokenIds: [],
   roundParticipants: BigNumber.from(0),
   roundStartedAt: BigNumber.from(0),
   price: BigNumber.from(0),
-  currentPot: BigNumber.from(0),
+  currentPot: "0",
   roundEndsAt: BigNumber.from(0),
 } as GameContextType);
 
 export const GameProvider = ({ children }) => {
-  const [currentPot, setCurrentPot] = useState<BigNumber>(BigNumber.from(0));
+  const [currentPot, setCurrentPot] = useState<string>("0");
   const [roundEndsAt, setRoundEndsAt] = useState<BigNumber>(BigNumber.from(0));
+  const [currentTokenIds, setCurrentTokenIds] = useState<BigNumber[]>([]);
 
   const { address } = useAccount();
   const { data: roundId } = useDumpingBanditsRoundId({
-    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
   });
   const { data: roundParticipants } = useDumpingBanditsRoundParticipants({
-    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
   });
   const { data: roundStartedAt } = useDumpingBanditsRoundStartedAt({
-    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
   });
   const { data: price } = useDumpingBanditsPrice({
-    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+  });
+
+  const { data: ownerTokenIds } = useDumpingBanditsGetOwnerTokenIds({
+    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    args: [address],
   });
 
   useEffect(() => {
     if (price && roundParticipants) {
-      setCurrentPot(price.mul(roundParticipants));
+      setCurrentPot(ethers.utils.formatEther(price.mul(roundParticipants)));
     }
   }, [price, roundParticipants]);
 
@@ -61,28 +71,24 @@ export const GameProvider = ({ children }) => {
     }
   }, [roundStartedAt]);
 
-  // useEffect(() => {
-  //   // get user info for current round - currentEntries
-  // }, [address]);
-
-  // for historical purposes:
-
-  // const { data: lastRoundLastTokenId } = useDumpingBanditsLastRoundLastTokenId({
-  //   address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
-  // });
-  // lastRoundLastTokenId &&
-  //   console.log("last token id", lastRoundLastTokenId.toString());
-
-  // const { data: rounds } = useDumpingBanditsRounds({
-  //   address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
-  //   args: [BigNumber.from(0)],
-  // });
-  // rounds && console.log("rounds", rounds);
+  // if (ownerTokenIds) {
+  //   let filtered = ownerTokenIds.filter((tokenId) => {
+  //     const { data: tokenRoundId } = useDumpingBanditsTokenIdRound({
+  //       address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+  //       args: [tokenId],
+  //     });
+  //     if (tokenRoundId === roundId) {
+  //       return true;
+  //     }
+  //   });
+  //   setCurrentTokenIds(filtered);
+  // }
 
   return (
     <GameContext.Provider
       value={{
         roundId,
+        currentTokenIds,
         roundParticipants,
         roundStartedAt,
         price,
