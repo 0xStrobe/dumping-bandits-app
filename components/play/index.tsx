@@ -28,7 +28,7 @@ const Play = () => {
   } = useContext(GameContext);
 
   const { config: participateConfig } = usePrepareDumpingBanditsParticipate({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
     overrides: {
       value: ethers.utils.parseEther("0.01"),
     },
@@ -96,7 +96,7 @@ const Play = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/2 flex justify-center">
+          <div className="w-1/2 flex justify-center items-center">
             <div className="relative w-[276px] h-[348px]">
               {insertCoin && (
                 <div className="absolute z-20 w-[200px] h-[200px] top-20 animation-insert-coin">

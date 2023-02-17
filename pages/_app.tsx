@@ -28,6 +28,8 @@ const wagmiClient = createClient({
 });
 
 function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
@@ -35,9 +37,7 @@ function MyApp({ Component, pageProps }) {
         modalSize="compact"
         theme={darkTheme({ ...darkTheme.accentColors.green })}
       >
-        <GameProvider>
-          <Component {...pageProps} />;
-        </GameProvider>
+        <GameProvider>{getLayout(<Component {...pageProps} />)}</GameProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

@@ -42,20 +42,20 @@ export const GameProvider = ({ children }) => {
 
   const { address } = useAccount();
   const { data: roundId } = useDumpingBanditsRoundId({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
   const { data: roundParticipants } = useDumpingBanditsRoundParticipants({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
   const { data: roundStartedAt } = useDumpingBanditsRoundStartedAt({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
   const { data: price } = useDumpingBanditsPrice({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
 
   const { data: ownerTokenIds } = useDumpingBanditsGetOwnerTokenIds({
-    address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
     args: [address],
   });
 
@@ -74,7 +74,7 @@ export const GameProvider = ({ children }) => {
   // if (ownerTokenIds) {
   //   let filtered = ownerTokenIds.filter((tokenId) => {
   //     const { data: tokenRoundId } = useDumpingBanditsTokenIdRound({
-  //       address: "0xdb844ecAd8D439f655194c6b246b277E864DED6A",
+  //       address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   //       args: [tokenId],
   //     });
   //     if (tokenRoundId === roundId) {
