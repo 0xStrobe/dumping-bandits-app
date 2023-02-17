@@ -1,12 +1,20 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { avalancheFuji } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { GameProvider } from "../contexts/gameContext";
 
-const { chains, provider } = configureChains([avalancheFuji], [publicProvider()]);
+const { chains, provider } = configureChains(
+  [avalancheFuji],
+  [publicProvider()]
+);
 
 const { connectors } = getDefaultWallets({
   appName: "My RainbowKit App",
@@ -22,8 +30,14 @@ const wagmiClient = createClient({
 function MyApp({ Component, pageProps }) {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} modalSize="compact" theme={darkTheme({ ...darkTheme.accentColors.green })}>
-        <Component {...pageProps} />;
+      <RainbowKitProvider
+        chains={chains}
+        modalSize="compact"
+        theme={darkTheme({ ...darkTheme.accentColors.green })}
+      >
+        <GameProvider>
+          <Component {...pageProps} />;
+        </GameProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

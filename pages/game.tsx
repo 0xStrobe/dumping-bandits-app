@@ -6,17 +6,25 @@ import Play from "../components/play";
 import Landing from "../components/landing";
 import MyBandits from "../components/myBandits";
 import Rules from "../components/rules";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 import {
   useBanditTreasury,
   useDumpingBanditsName,
   useDumpingBanditsTokenUri,
+  useDumpingBanditsLastRoundLastTokenId,
+  useDumpingBanditsRoundId,
+  useDumpingBanditsRoundStartedAt,
+  useDumpingBanditsRounds,
+  useDumpingBanditsRoundParticipants,
+  useDumpingBanditsApprove,
   useDumpingBanditsParticipate,
   usePrepareDumpingBanditsParticipate,
 } from "../hooks/useDumpingBandits";
 import { BigNumber, ethers } from "ethers";
+import { GameContext } from "../contexts/gameContext";
 
 interface Page {
   name: string;
@@ -45,10 +53,23 @@ export default function Home() {
     },
   ]);
 
-  const { data: contractName } = useDumpingBanditsName({
-    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
-  });
-  contractName && console.log(contractName);
+  const {
+    roundId,
+    roundParticipants,
+    roundStartedAt,
+    price,
+    currentPot,
+    roundEndsAt,
+  } = useContext(GameContext);
+
+  if (roundId && roundParticipants && price && currentPot && roundStartedAt) {
+    console.log("roundId", roundId.toString());
+    console.log("roundParticipants", roundParticipants.toString());
+    console.log("price", price.toString());
+    console.log("currentPot", currentPot.toString());
+    console.log("roundStartedAt", roundStartedAt.toString());
+    console.log("roundEndsAt", roundEndsAt.toString());
+  }
 
   const { data: nftUri } = useDumpingBanditsTokenUri({
     address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
@@ -63,7 +84,8 @@ export default function Home() {
     },
   });
 
-  const { write: executeParticipate } = useDumpingBanditsParticipate(participateConfig);
+  const { write: executeParticipate } =
+    useDumpingBanditsParticipate(participateConfig);
 
   return (
     <div className="w-full min-h-screen app-gradient">
@@ -75,12 +97,14 @@ export default function Home() {
       <div className="w-full px-20 pt-8 pb-8">
         <div className="flex items-center justify-between w-full">
           <Link href="/">
-            <div className="relative mt-2 text-lg text-brand-green">DUMPING BANDITS</div>
+            <div className="relative mt-2 text-lg text-brand-green">
+              DUMPING BANDITS
+            </div>
           </Link>
           <ConnectButton />
           {<button onClick={() => executeParticipate?.()}>Participate</button>}
         </div>
-        <div className="pl-5">
+        <div className="">
           {pages.map((page: Page) => {
             return (
               <div key={page.name}>
@@ -91,7 +115,9 @@ export default function Home() {
                       setActivePage(page.name);
                     }}
                   >
-                    {page.name === "Play" ? `Play – Round ${roundNumber}` : page.name}
+                    {page.name === "Play"
+                      ? `Play – Round ${roundNumber}`
+                      : page.name}
                   </div>
                   {activePage === page.name && (
                     <div className="absolute flex items-center justify-center w-4 h-4 rounded-full bg-brand-green/20 -left-5 top-1.5 animate-pulse">
@@ -99,7 +125,9 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-                <div className={`h-0 ${activePage === page.name && "h-auto"}`}></div>
+                <div
+                  className={`h-0 ${activePage === page.name && "h-auto"}`}
+                ></div>
                 {activePage === page.name && page.component}
               </div>
             );
