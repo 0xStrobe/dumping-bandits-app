@@ -14,8 +14,9 @@ import {
   useDumpingBanditsName,
   useDumpingBanditsTokenUri,
   useDumpingBanditsParticipate,
+  usePrepareDumpingBanditsParticipate,
 } from "../hooks/useDumpingBandits";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 interface Page {
   name: string;
@@ -55,6 +56,15 @@ export default function Home() {
   });
   nftUri && console.log(nftUri);
 
+  const { config: participateConfig } = usePrepareDumpingBanditsParticipate({
+    address: "0x56874d970645C753Ba3d9A078D2cB08d2fBe566a",
+    overrides: {
+      value: ethers.utils.parseEther("0.01"),
+    },
+  });
+
+  const { write: executeParticipate } = useDumpingBanditsParticipate(participateConfig);
+
   return (
     <div className="w-full min-h-screen app-gradient">
       <Head>
@@ -68,6 +78,7 @@ export default function Home() {
             <div className="relative mt-2 text-lg text-brand-green">DUMPING BANDITS</div>
           </Link>
           <ConnectButton />
+          {<button onClick={() => executeParticipate?.()}>Participate</button>}
         </div>
         <div className="pl-5">
           {pages.map((page: Page) => {
