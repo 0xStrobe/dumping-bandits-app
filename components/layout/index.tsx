@@ -41,33 +41,32 @@ export default function Layout({ children }) {
               DUMPING BANDITS
             </div>
           </Link>
-          <ConnectButton />
-        </div>
-
-        <div className="flex gap-3">
-          {pages.map((page: Page) => {
-            return (
-              <div key={page.name}>
-                <div className="relative mt-2 text-lg text-brand-green">
-                  <Link
-                    href={page.href}
-                    className="cursor-pointer relative z-20"
-                  >
-                    {page.name}
-                  </Link>
-                  {router.pathname === page.name ||
-                  router.pathname.includes(page.match) ? (
-                    <div className="absolute z-10 flex items-center justify-center w-6 h-4 rounded-full bg-brand-green/30 left-1 top-1.5 animate-pulse blur-sm">
-                      <div className="w-2 h-2 rounded-full bg-brand-green"></div>
-                    </div>
-                  ) : null}
+          <div className="flex gap-3">
+            {pages.map((page: Page) => {
+              return (
+                <div key={page.name}>
+                  <div className="relative mt-2 text-lg text-brand-green">
+                    <Link
+                      href={page.href}
+                      className="cursor-pointer relative z-20"
+                    >
+                      {page.name}
+                    </Link>
+                    {router.pathname === page.name ||
+                    router.pathname.includes(page.match) ? (
+                      <div className="absolute z-10 flex items-center justify-center w-6 h-4 rounded-full bg-brand-green/30 left-1 top-1.5 animate-pulse blur-sm">
+                        <div className="w-2 h-2 rounded-full bg-brand-green"></div>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div
+                    className={`h-0 ${activePage === page.name && "h-auto"}`}
+                  ></div>
                 </div>
-                <div
-                  className={`h-0 ${activePage === page.name && "h-auto"}`}
-                ></div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <ConnectButton />
         </div>
         {children}
       </div>

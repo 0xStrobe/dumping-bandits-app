@@ -3,7 +3,7 @@ import Layout from "../../components/layout";
 
 const Lore = () => {
   return (
-    <div className="grid grid-cols-12">
+    <div className="grid grid-cols-12 py-12">
       <div className="col-span-7 cols">
         <p className="mb-6 text-base text-gray-200">
           There were 3 of them. Sisyphus, considered by some to be the leader.

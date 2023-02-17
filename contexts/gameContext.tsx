@@ -15,27 +15,12 @@ import {
 } from "../hooks/useDumpingBandits";
 import { BigNumber, ethers } from "ethers";
 import { useAccount } from "wagmi";
-
-type GameContextType = {
-  roundId: BigNumber;
-  currentTokenIds: BigNumber[];
-  roundParticipants: BigNumber;
-  roundStartedAt: BigNumber;
-  price: BigNumber;
-  currentPot: string;
-  roundEndsAt: BigNumber;
-};
-
-type OwnerToken = {
-  tokenId: BigNumber;
-  roundId: BigNumber;
-  prizePoolSize: BigNumber;
-  prizeRank: BigNumber;
-};
+import { OwnerToken, GameContextType } from "./types";
 
 export const GameContext = createContext({
   roundId: BigNumber.from(1),
   currentTokenIds: [],
+  currentOwnerTokens: [],
   roundParticipants: BigNumber.from(0),
   roundStartedAt: BigNumber.from(0),
   price: BigNumber.from(0),
@@ -52,15 +37,19 @@ export const GameProvider = ({ children }) => {
   );
 
   const { address } = useAccount();
+
   const { data: roundId } = useDumpingBanditsRoundId({
     address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
+
   const { data: roundParticipants } = useDumpingBanditsRoundParticipants({
     address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
+
   const { data: roundStartedAt } = useDumpingBanditsRoundStartedAt({
     address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
+
   const { data: price } = useDumpingBanditsPrice({
     address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
   });
@@ -87,21 +76,18 @@ export const GameProvider = ({ children }) => {
     }
   }, [roundStartedAt]);
 
-  // useEffect(() => {
-
-  // }, [])
-  // if (ownerTokenIds) {
-  //   let filtered = ownerTokenIds.filter((tokenId) => {
-  //     const { data: tokenRoundId } = useDumpingBanditsTokenIdRound({
-  //       address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
-  //       args: [tokenId],
-  //     });
-  //     if (tokenRoundId === roundId) {
-  //       return true;
-  //     }
-  //   });
-  //   setCurrentTokenIds(filtered);
-  // }
+  useEffect(() => {
+    console.log("ownerTokens", ownerTokens);
+    if (ownerTokens) {
+      let filtered = ownerTokens.filter((tokenId) => {
+        const tokenRoundId = tokenId.roundId;
+        if (tokenRoundId.eq(roundId)) {
+          return true;
+        }
+      });
+      setCurrentOwnerTokens(filtered);
+    }
+  }, [ownerTokens]);
 
   return (
     <GameContext.Provider
@@ -112,6 +98,7 @@ export const GameProvider = ({ children }) => {
         roundStartedAt,
         price,
         currentPot,
+        currentOwnerTokens,
         roundEndsAt,
       }}
     >
