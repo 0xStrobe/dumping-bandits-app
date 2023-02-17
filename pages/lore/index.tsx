@@ -47,7 +47,7 @@ const Lore = () => {
         <div className="flex justify-end gap-6">
           <div className="relative shadow-2xl w-full max-w-[230px] rounded-lg h-80 border-[0.5px] overflow-hidden border-gray-200/30">
             <Image
-              src="/images/sis.png"
+              src="/images/wojak.png"
               fill
               alt="sisyphus"
               className="object-contain"
