@@ -53,7 +53,7 @@ export default function Home() {
           </Link>
           <ConnectButton />
         </div>
-        <div className="pl-5">
+        <div className="">
           {pages.map((page: Page) => {
             return (
               <div>
@@ -62,7 +62,8 @@ export default function Home() {
                     className="cursor-pointer"
                     onClick={() => {
                       setActivePage(page.name);
-                    }}>
+                    }}
+                  >
                     {page.name === "Play"
                       ? `Play – Round ${roundNumber}`
                       : page.name}
@@ -74,9 +75,8 @@ export default function Home() {
                   )}
                 </div>
                 <div
-                  className={`h-0 ${
-                    activePage === page.name && "h-auto"
-                  }`}></div>
+                  className={`h-0 ${activePage === page.name && "h-auto"}`}
+                ></div>
                 {activePage === page.name && page.component}
               </div>
             );
