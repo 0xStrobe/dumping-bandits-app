@@ -30,7 +30,7 @@ const Play = () => {
   const { config: participateConfig } = usePrepareDumpingBanditsParticipate({
     address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
     overrides: {
-      value: ethers.utils.parseEther("0.01"),
+      value: ethers.utils.parseEther("0.02"),
     },
   });
 

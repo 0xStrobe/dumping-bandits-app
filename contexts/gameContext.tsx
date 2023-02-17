@@ -11,6 +11,7 @@ import {
   useDumpingBanditsGetOwnerTokenIds,
   useDumpingBanditsPrice,
   useDumpingBanditsTokenIdRound,
+  useDumpingBanditsGetOwnerTokens,
 } from "../hooks/useDumpingBandits";
 import { BigNumber, ethers } from "ethers";
 import { useAccount } from "wagmi";
@@ -23,6 +24,13 @@ type GameContextType = {
   price: BigNumber;
   currentPot: string;
   roundEndsAt: BigNumber;
+};
+
+type OwnerToken = {
+  tokenId: BigNumber;
+  roundId: BigNumber;
+  prizePoolSize: BigNumber;
+  prizeRank: BigNumber;
 };
 
 export const GameContext = createContext({
@@ -39,6 +47,9 @@ export const GameProvider = ({ children }) => {
   const [currentPot, setCurrentPot] = useState<string>("0");
   const [roundEndsAt, setRoundEndsAt] = useState<BigNumber>(BigNumber.from(0));
   const [currentTokenIds, setCurrentTokenIds] = useState<BigNumber[]>([]);
+  const [currentOwnerTokens, setCurrentOwnerTokens] = useState<OwnerToken[]>(
+    []
+  );
 
   const { address } = useAccount();
   const { data: roundId } = useDumpingBanditsRoundId({
@@ -59,6 +70,11 @@ export const GameProvider = ({ children }) => {
     args: [address],
   });
 
+  const { data: ownerTokens } = useDumpingBanditsGetOwnerTokens({
+    address: "0x272A9c5fcAa92318615EC75e2fE16CFD35D83ff6",
+    args: [address],
+  });
+
   useEffect(() => {
     if (price && roundParticipants) {
       setCurrentPot(ethers.utils.formatEther(price.mul(roundParticipants)));
@@ -71,6 +87,9 @@ export const GameProvider = ({ children }) => {
     }
   }, [roundStartedAt]);
 
+  // useEffect(() => {
+
+  // }, [])
   // if (ownerTokenIds) {
   //   let filtered = ownerTokenIds.filter((tokenId) => {
   //     const { data: tokenRoundId } = useDumpingBanditsTokenIdRound({
