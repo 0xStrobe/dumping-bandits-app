@@ -52,9 +52,6 @@ const Play = () => {
         toast.loading("Loading...");
         setLoading(false);
         executeParticipate?.();
-        console.log(participateData);
-        console.log(participateLoading);
-        console.log(participateSuccess);
       }, 2000);
     }
   };

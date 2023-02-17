@@ -9,6 +9,20 @@ const Countdown = () => {
   const { roundEndsAt, roundStartedAt, roundId } = useContext(GameContext);
   const [countdown, setCountdown] = useState("");
 
+  const [time, setTime] = useState(0);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTime((prevTime) => prevTime + 1); // <-- Change this line!
+    }, 1000);
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    calcCountdown();
+  }, [time]);
+
   const calcCountdown = () => {
     if (roundEndsAt.toNumber() !== 0) {
       const now = Math.floor(Date.now() / 1000);
@@ -28,11 +42,6 @@ const Countdown = () => {
       setCountdown(`${minutes}:${formattedSeconds}`);
     }
   };
-
-  // Third Attempts
-  useEffect(() => {
-    setInterval(() => calcCountdown(), 1000);
-  }, []);
 
   return roundStartedAt.toNumber() === 0 ? (
     <div>Round {roundId.toNumber() + 1} is ready to start</div>

@@ -119,7 +119,6 @@ export const GameProvider = ({ children }) => {
       });
       setCurrentOwnerTokens(filtered);
     }
-    console.log(roundId.toString());
   }, [ownerTokens, roundId]);
 
   return (
