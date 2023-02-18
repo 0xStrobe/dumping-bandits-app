@@ -24,7 +24,7 @@ const Countdown = () => {
   }, [time]);
 
   const calcCountdown = () => {
-    if (roundEndsAt.toNumber() !== 0) {
+    if (roundEndsAt?.toNumber() !== 0) {
       const now = Math.floor(Date.now() / 1000);
       if (now > roundEndsAt.toNumber()) {
         setCountdown("Over");
